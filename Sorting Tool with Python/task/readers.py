@@ -1,6 +1,6 @@
 """This module provides classes for reading different types of data from input."""
 from abc import ABC, abstractmethod
-
+from collections import Counter
 
 class Reader(ABC):
     """Abstract base class for data readers."""
@@ -10,9 +10,31 @@ class Reader(ABC):
         """Collect data from input."""
         pass
 
+    @abstractmethod
+    def analyze_data(self) -> None:
+        """Analyze collected data and print results."""
+        pass
 
 class LongReader(Reader):
     """Reader for long integers."""
+
+    def analyze_data(self) -> None:
+        """Analyze collected long integers and print results.
+
+        - total number of integers
+        - greatest value
+        - number of occurrences of the greatest value
+        - percentage of the greatest value occurrences
+        """
+
+        num_of_ints = len(self.data)
+        greatest = max(self.data)
+        counts = Counter(self.data)
+        num_of_greatest = counts[greatest]
+        percentage = (num_of_greatest / num_of_ints) * 100
+
+        print(f'Total numbers: {num_of_ints}.')
+        print(f'Greatest number: {greatest} ({num_of_greatest} time(s), {percentage:.2f}%).')
 
     def __init__(self):
         self.data: list[int] = []
@@ -28,8 +50,12 @@ class LongReader(Reader):
             except EOFError:
                 break
 
+
 class LineReader(Reader):
     """Reader for lines of text."""
+
+    def analyze_data(self) -> None:
+        raise NotImplementedError
 
     def __init__(self):
         self.data: list[str] = []
@@ -44,8 +70,12 @@ class LineReader(Reader):
             except EOFError:
                 break
 
+
 class WordReader(Reader):
     """Reader for words."""
+
+    def analyze_data(self) -> None:
+        raise NotImplementedError
 
     def __init__(self):
         self.data: list[str] = []

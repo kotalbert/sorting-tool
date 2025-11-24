@@ -1,7 +1,6 @@
-from collections import Counter
 from argparse import ArgumentParser
 
-from readers import LongReader, Reader, WordReader, LineReader
+from readers import LongReader, WordReader, LineReader
 
 
 def main():
