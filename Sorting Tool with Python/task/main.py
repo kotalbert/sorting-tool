@@ -6,7 +6,7 @@ from readers import LongReader, WordReader, LineReader
 def main():
     parser = ArgumentParser()
     parser.add_argument('-dataType', type=str, default='long', choices=['long', 'word', 'line'])
-    parser.add_argument('-sortingType', type=str, default='long', choices=['natural', 'byCount'])
+    parser.add_argument('-sortingType', type=str, default='natural', choices=['natural', 'byCount'])
     args = parser.parse_args()
 
     reader = None
@@ -22,6 +22,7 @@ def main():
 
     reader.collect_data()
 
+    reader.print_sorted_data(args.sortingType)
 
 
 if __name__ == '__main__':

@@ -1,5 +1,7 @@
 """This module provides classes for reading different types of data from input."""
 from abc import ABC, abstractmethod
+from collections import Counter
+from math import floor
 
 
 class Reader(ABC):
@@ -10,9 +12,28 @@ class Reader(ABC):
         """Collect data from input."""
         pass
 
+    @abstractmethod
+    def print_sorted_data(self, sorting_type: str) -> str:
+        """Print sorted data based on the specified sorting type."""
+        pass
+
 
 class LongReader(Reader):
     """Reader for long integers."""
+
+    def print_sorted_data(self, sorting_type: str):
+        print(f'Total numbers: {len(self.data)}.')
+        if sorting_type == 'natural':
+            sorted_data = sorted(self.data)
+            print('Sorted data: ' + ' '.join(map(str, sorted_data)))
+        else:
+            counts = Counter(self.data)
+            output = []
+            for c in counts:
+                percent = floor(counts[c] / len(self.data) * 100)
+                output.append(f'{c}: {counts[c]} time(s), {percent:.0f}%')
+            print('\n'.join(output))
+
 
     def __init__(self):
         self.data: list[int] = []
@@ -32,6 +53,9 @@ class LongReader(Reader):
 class LineReader(Reader):
     """Reader for lines of text."""
 
+    def print_sorted_data(self, sorting_type: str) -> str:
+        pass
+
     def __init__(self):
         self.data: list[str] = []
 
@@ -48,6 +72,9 @@ class LineReader(Reader):
 
 class WordReader(Reader):
     """Reader for words."""
+
+    def print_sorted_data(self, sorting_type: str) -> str:
+        pass
 
     def __init__(self):
         self.data: list[str] = []
