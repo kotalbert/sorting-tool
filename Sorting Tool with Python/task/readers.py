@@ -8,7 +8,7 @@ class Reader(ABC):
     """Abstract base class for data readers."""
 
     @abstractmethod
-    def collect_data(self) -> None:
+    def collect_data(self, input_file: str = None) -> None:
         """Collect data from input."""
         pass
 
@@ -39,22 +39,33 @@ class LongReader(Reader):
     def __init__(self):
         self.data: list[int] = []
 
-    def collect_data(self) -> None:
+    def collect_data(self, input_file: str = None) -> None:
         """Collect long integers from input."""
 
-        while True:
-            try:
-                line = input()
-                tokens = line.split()
-                for token in tokens:
-                    try:
-                        number = int(token)
-                        self.data.append(number)
-                    except ValueError:
-                        print(f'"{token}" is not a long. It will be skipped.')
-            except EOFError:
-                break
+        if input_file is None:
 
+            while True:
+                try:
+                    line = input()
+                    tokens = line.split()
+                    for token in tokens:
+                        try:
+                            number = int(token)
+                            self.data.append(number)
+                        except ValueError:
+                            print(f'"{token}" is not a long. It will be skipped.')
+                except EOFError:
+                    break
+        else:
+            with open(input_file, 'r') as file:
+                for line in file:
+                    tokens = line.split()
+                    for token in tokens:
+                        try:
+                            number = int(token)
+                            self.data.append(number)
+                        except ValueError:
+                            print(f'"{token}" is not a long. It will be skipped.')
 
 class LineReader(Reader):
     """Reader for lines of text."""
@@ -77,15 +88,19 @@ class LineReader(Reader):
     def __init__(self):
         self.data: list[str] = []
 
-    def collect_data(self) -> None:
+    def collect_data(self, input_file: str = None) -> None:
         """Collect lines of text from input."""
-
-        while True:
-            try:
-                line = input()
-                self.data.append(line)
-            except EOFError:
-                break
+        if input_file is None:
+            while True:
+                try:
+                    line = input()
+                    self.data.append(line)
+                except EOFError:
+                    break
+        else:
+            with open(input_file, 'r') as file:
+                for line in file:
+                    self.data.append(line.rstrip('\n'))
 
 
 class WordReader(Reader):
@@ -108,16 +123,22 @@ class WordReader(Reader):
     def __init__(self):
         self.data: list[str] = []
 
-    def collect_data(self) -> None:
+    def collect_data(self, input_file: str = None) -> None:
         """Collect words from input.
 
         Word is any number of characters separated by whitespace.
         """
 
-        while True:
-            try:
-                line = input()
-                words = line.split()
-                self.data.extend(words)
-            except EOFError:
-                break
+        if input_file is None:
+            while True:
+                try:
+                    line = input()
+                    words = line.split()
+                    self.data.extend(words)
+                except EOFError:
+                    break
+        else:
+            with open(input_file, 'r') as file:
+                for line in file:
+                    words = line.split()
+                    self.data.extend(words)

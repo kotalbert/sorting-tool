@@ -18,6 +18,9 @@ def main():
     parser = ArgumentParser()
     parser.add_argument('-dataType', type=str, nargs='?', const=SENTINEL, default=None)
     parser.add_argument('-sortingType', type=str, nargs='?', const=SENTINEL, default=None)
+    parser.add_argument('-inputFile', type=str, nargs='?', const=None, default=None)
+    parser.add_argument('-outputFile', type=str, nargs='?', const=None, default=None)
+
     args, unknown = parser.parse_known_args()
 
     for arg in unknown:
@@ -39,7 +42,7 @@ def main():
         case _:
             reader = LongReader()
 
-    reader.collect_data()
+    reader.collect_data(args.inputFile)
 
     reader.print_sorted_data(args.sortingType)
 
