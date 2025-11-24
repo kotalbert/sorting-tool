@@ -1,39 +1,26 @@
 from collections import Counter
+from argparse import ArgumentParser
+
+from readers import LongReader, Reader
+
 
 def main():
-    numbers = []
+    parser = ArgumentParser()
+    parser.add_argument('-dataType', type=str, default='long', choices=['long', 'word', 'line'], )
+    args = parser.parse_args()
 
-    while True:
-        try:
-            data = input()
-            new_nums = get_numbers(data)
-            numbers.extend(new_nums)
-        except EOFError:
-            break
+    match args.dataType:
+        case 'long':
+            reader = LongReader()
+        case 'word':
+            pass
+        case 'line':
+            pass
+        case _:
+            reader = LongReader()
 
-    n, maximum, n_of_max = analyze_numbers(numbers)
-    print(f'Total numbers: {n}.\n'
-          f'The greatest number: {maximum} ({n_of_max} time(s)).')
-
-def analyze_numbers(numbers: list[int]) -> tuple[int, int, float]:
-    """Analyze a list of integers and return
-     - the numbers of integers
-     - the maximum value
-     - how often the maximum value occurs
-     """
-    maximum = max(numbers)
-    number_of_integers = len(numbers)
-    counts = Counter(numbers)
-    number_of_max_occurrences = counts[maximum]
-
-
-    return number_of_integers, maximum, number_of_max_occurrences
-
-
-def get_numbers(d) -> list[int]:
-    """Extracts integers from a given string."""
-    strs = d.split()
-    return list(map(int, strs))
+    reader.collect_data()
+    print(reader.data)
 
 
 if __name__ == '__main__':
