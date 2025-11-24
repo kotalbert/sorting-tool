@@ -28,6 +28,7 @@ class LongReader(Reader):
             print('Sorted data: ' + ' '.join(map(str, sorted_data)))
         else:
             counts = Counter(self.data)
+            counts = dict(sorted(counts.items(), key=lambda item: (item[1], item[0])))
             output = []
             for c in counts:
                 percent = floor(counts[c] / len(self.data) * 100)
@@ -54,7 +55,19 @@ class LineReader(Reader):
     """Reader for lines of text."""
 
     def print_sorted_data(self, sorting_type: str) -> str:
-        pass
+        print(f'Total lines: {len(self.data)}.')
+        if sorting_type == 'natural':
+            sorted_data = sorted(self.data)
+            print('Sorted data:')
+            print('\n'.join(sorted_data))
+        else:
+            counts = Counter(self.data)
+            counts = dict(sorted(counts.items(), key=lambda item: (item[1], item[0])))
+            output = []
+            for c in counts:
+                percent = floor(counts[c] / len(self.data) * 100)
+                output.append(f'{c}: {counts[c]} time(s), {percent:.0f}%')
+            print('\n'.join(output))
 
     def __init__(self):
         self.data: list[str] = []
@@ -74,7 +87,18 @@ class WordReader(Reader):
     """Reader for words."""
 
     def print_sorted_data(self, sorting_type: str) -> str:
-        pass
+        print(f'Total words: {len(self.data)}.')
+        if sorting_type == 'natural':
+            sorted_data = sorted(self.data)
+            print('Sorted data: ' + ' '.join(sorted_data))
+        else:
+            counts = Counter(self.data)
+            counts = dict(sorted(counts.items(), key=lambda item: (item[1], item[0])))
+            output = []
+            for c in counts:
+                percent = floor(counts[c] / len(self.data) * 100)
+                output.append(f'{c}: {counts[c]} time(s), {percent:.0f}%')
+            print('\n'.join(output))
 
     def __init__(self):
         self.data: list[str] = []
