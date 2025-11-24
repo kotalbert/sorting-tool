@@ -45,8 +45,13 @@ class LongReader(Reader):
         while True:
             try:
                 line = input()
-                numbers = map(int, line.split())
-                self.data.extend(numbers)
+                tokens = line.split()
+                for token in tokens:
+                    try:
+                        number = int(token)
+                        self.data.append(number)
+                    except ValueError:
+                        print(f'"{token}" is not a long. It will be skipped.')
             except EOFError:
                 break
 
