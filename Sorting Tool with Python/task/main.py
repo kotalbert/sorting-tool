@@ -3,11 +3,30 @@ from argparse import ArgumentParser
 from readers import LongReader, WordReader, LineReader
 
 
+def handle_argument_errors(args):
+    if args.dataType == SENTINEL:
+        print('No data type defined!')
+        exit(1)
+    if args.sortingType == SENTINEL:
+        print('No sorting type defined!')
+        exit(1)
+
+
+SENTINEL = '_no_value_'
+
 def main():
     parser = ArgumentParser()
-    parser.add_argument('-dataType', type=str, default='long', choices=['long', 'word', 'line'])
-    parser.add_argument('-sortingType', type=str, default='natural', choices=['natural', 'byCount'])
-    args = parser.parse_args()
+    parser.add_argument('-dataType', type=str, nargs='?', const=SENTINEL, default=None)
+    parser.add_argument('-sortingType', type=str, nargs='?', const=SENTINEL, default=None)
+    args, unknown = parser.parse_known_args()
+
+    for arg in unknown:
+        print(f'"{arg}" is not a valid parameter. It will be skipped.')
+
+    if args.sortingType is None:
+        args.sortingType = 'natural'
+
+    handle_argument_errors(args)
 
     reader = None
     match args.dataType:
