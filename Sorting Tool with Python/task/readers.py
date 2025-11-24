@@ -34,7 +34,7 @@ class LongReader(Reader):
         percentage = (num_of_greatest / num_of_ints) * 100
 
         print(f'Total numbers: {num_of_ints}.')
-        print(f'Greatest number: {greatest} ({num_of_greatest} time(s), {percentage:.2f}%).')
+        print(f'The greatest number: {greatest} ({num_of_greatest} time(s), {percentage:.0f}%).')
 
     def __init__(self):
         self.data: list[int] = []

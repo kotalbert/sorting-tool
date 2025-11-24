@@ -20,7 +20,7 @@ def main():
             reader = LongReader()
 
     reader.collect_data()
-    print(reader.data)
+    reader.analyze_data()
 
 
 if __name__ == '__main__':
