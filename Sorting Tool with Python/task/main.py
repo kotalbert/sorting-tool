@@ -1,7 +1,7 @@
 from collections import Counter
 from argparse import ArgumentParser
 
-from readers import LongReader, Reader
+from readers import LongReader, Reader, WordReader, LineReader
 
 
 def main():
@@ -9,13 +9,14 @@ def main():
     parser.add_argument('-dataType', type=str, default='long', choices=['long', 'word', 'line'], )
     args = parser.parse_args()
 
+    reader = None
     match args.dataType:
         case 'long':
             reader = LongReader()
         case 'word':
-            pass
+            reader = WordReader()
         case 'line':
-            pass
+            reader = LineReader()
         case _:
             reader = LongReader()
 
