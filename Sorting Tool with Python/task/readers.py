@@ -1,4 +1,5 @@
 """This module provides classes for reading different types of data from input."""
+import sys
 from abc import ABC, abstractmethod
 from collections import Counter
 from math import floor
@@ -13,7 +14,7 @@ class Reader(ABC):
         pass
 
     @abstractmethod
-    def print_sorted_data(self, sorting_type: str) -> str:
+    def print_sorted_data(self, sorting_type: str, output_file: str = None) -> str:
         """Print sorted data based on the specified sorting type."""
         pass
 
@@ -21,11 +22,16 @@ class Reader(ABC):
 class LongReader(Reader):
     """Reader for long integers."""
 
-    def print_sorted_data(self, sorting_type: str):
-        print(f'Total numbers: {len(self.data)}.')
+    def print_sorted_data(self, sorting_type: str, output_file: str = None) -> None:
+        if output_file is not None:
+            f = open(output_file, 'w')
+        else:
+            f = sys.stdout
+
+        print(f'Total numbers: {len(self.data)}.', file=f)
         if sorting_type == 'natural':
             sorted_data = sorted(self.data)
-            print('Sorted data: ' + ' '.join(map(str, sorted_data)))
+            print('Sorted data: ' + ' '.join(map(str, sorted_data)), file=f)
         else:
             counts = Counter(self.data)
             counts = dict(sorted(counts.items(), key=lambda item: (item[1], item[0])))
@@ -33,7 +39,9 @@ class LongReader(Reader):
             for c in counts:
                 percent = floor(counts[c] / len(self.data) * 100)
                 output.append(f'{c}: {counts[c]} time(s), {percent:.0f}%')
-            print('\n'.join(output))
+            print('\n'.join(output), file=f)
+
+        f.close()
 
 
     def __init__(self):
@@ -70,7 +78,7 @@ class LongReader(Reader):
 class LineReader(Reader):
     """Reader for lines of text."""
 
-    def print_sorted_data(self, sorting_type: str) -> str:
+    def print_sorted_data(self, sorting_type: str, output_file: str = None) -> None:
         print(f'Total lines: {len(self.data)}.')
         if sorting_type == 'natural':
             sorted_data = sorted(self.data)
@@ -106,7 +114,7 @@ class LineReader(Reader):
 class WordReader(Reader):
     """Reader for words."""
 
-    def print_sorted_data(self, sorting_type: str) -> str:
+    def print_sorted_data(self, sorting_type: str, output_file: str = None) -> None:
         print(f'Total words: {len(self.data)}.')
         if sorting_type == 'natural':
             sorted_data = sorted(self.data)
